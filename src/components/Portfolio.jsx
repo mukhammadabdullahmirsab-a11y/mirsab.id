@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { css } from '@emotion/react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Tabs from '@mui/material/Tabs'
@@ -8,6 +9,8 @@ import { ExternalLink, ArrowRight, Award } from 'lucide-react'
 import { projects } from '../data/projects'
 import { certificates } from '../data/certificates'
 import { techStack } from '../data/techStack'
+import { useLanguage } from '../context/LanguageContext'
+import { translations } from '../data/translations'
 
 const portfolioSection = css`
   position: relative;
@@ -271,6 +274,9 @@ const cardVariants = {
 
 export default function Portfolio() {
   const [tab, setTab] = useState(0)
+  const navigate = useNavigate()
+  const { language } = useLanguage()
+  const t = translations[language].portfolio
 
   return (
     <section id="portfolio" css={portfolioSection}>
@@ -283,9 +289,9 @@ export default function Portfolio() {
             variant="fullWidth"
             textColor="inherit"
           >
-            <Tab label="Projects" />
-            <Tab label="Certificates" />
-            <Tab label="Tech Stack" />
+            <Tab label={t.tabs.projects} />
+            <Tab label={t.tabs.certificates} />
+            <Tab label={t.tabs.techStack} />
           </Tabs>
         </div>
 
@@ -300,7 +306,7 @@ export default function Portfolio() {
               animate="animate"
               exit="exit"
             >
-              {projects.map((project, index) => (
+              {projects.map((project) => (
                 <motion.div key={project.id} css={projectCard} variants={cardVariants}>
                   {project.image ? (
                     <div css={projectImage}>
@@ -327,11 +333,11 @@ export default function Portfolio() {
                     <h3 css={projectTitle}>{project.title}</h3>
                     <p css={projectDesc}>{project.description}</p>
                     <div css={projectFooter}>
-                      <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" css={liveLink}>
-                        Live Demo <ExternalLink size={14} />
-                      </a>
-                      <button css={detailsBtn}>
-                        Details <ArrowRight size={14} />
+                      <button css={liveLink} onClick={() => navigate(project.liveUrl)}>
+                        {t.liveDemo} <ExternalLink size={14} />
+                      </button>
+                      <button css={detailsBtn} onClick={() => navigate(`/project/${project.id}`)}>
+                        {t.details} <ArrowRight size={14} />
                       </button>
                     </div>
                   </div>
@@ -371,7 +377,7 @@ export default function Portfolio() {
               animate="animate"
               exit="exit"
             >
-              {techStack.map((tech, i) => (
+              {techStack.map((tech) => (
                 <motion.div key={tech.name} css={techCard} variants={cardVariants}>
                   <img src={tech.icon} alt={tech.name} loading="lazy" />
                   <span>{tech.name}</span>

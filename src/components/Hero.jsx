@@ -1,9 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { css, keyframes } from '@emotion/react'
 import { motion } from 'framer-motion'
-import { ExternalLink, Mail } from 'lucide-react'
+import { ExternalLink, Mail, Download, ArrowRight } from 'lucide-react'
 import { FiGithub, FiLinkedin, FiInstagram } from 'react-icons/fi'
 import Typewriter from 'typewriter-effect'
+import { useLanguage } from '../context/LanguageContext'
+import { translations } from '../data/translations'
 
 const heroSection = css`
   position: relative;
@@ -302,6 +304,9 @@ const itemVariants = {
 }
 
 export default function Hero() {
+  const { language } = useLanguage()
+  const t = translations[language].hero
+
   const scrollTo = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
   }
@@ -317,15 +322,15 @@ export default function Hero() {
             animate="visible"
           >
             <motion.h1 css={heroTitle} variants={itemVariants}>
-              Web Developer
+              <span css={gradientText}>{t.greeting}</span>
               <br />
-              <span css={gradientText}>& IT Support</span>
+              Abdullah Mirsab
             </motion.h1>
 
             <motion.div css={typewriterStyle} variants={itemVariants}>
               <Typewriter
                 options={{
-                  strings: ['IT Support', 'Web Developer', 'Fresh Graduate', 'Problem Solver'],
+                  strings: t.roles,
                   autoStart: true,
                   loop: true,
                   deleteSpeed: 40,
@@ -335,8 +340,7 @@ export default function Hero() {
             </motion.div>
 
             <motion.p css={descriptionStyle} variants={itemVariants}>
-              Building User-Friendly Websites & Delivering Reliable IT Support —
-              Bridging Development and Technical Solutions.
+              {t.description}
             </motion.p>
 
             <motion.div css={tagsRow} variants={itemVariants}>
@@ -390,7 +394,7 @@ export default function Hero() {
             transition={{ duration: 0.5, delay: 0 }}
           >
             <h3>6+</h3>
-            <p>Projects</p>
+            <p>{t.stats.projects}</p>
           </motion.div>
           <motion.div
             css={statCard}
@@ -400,7 +404,7 @@ export default function Hero() {
             transition={{ duration: 0.5, delay: 0.15 }}
           >
             <h3>4+</h3>
-            <p>Certificates</p>
+            <p>{t.stats.certificates}</p>
           </motion.div>
           <motion.div
             css={statCard}
@@ -409,8 +413,8 @@ export default function Hero() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <h3>Fresh</h3>
-            <p>Graduate</p>
+            <h3>{t.stats.fresh}</h3>
+            <p>{t.stats.graduate}</p>
           </motion.div>
         </div>
       </div>

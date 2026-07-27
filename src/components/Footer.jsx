@@ -1,5 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
+import { useLanguage } from '../context/LanguageContext'
+import { translations } from '../data/translations'
 import { Heart } from 'lucide-react'
 import { FiGithub, FiLinkedin, FiInstagram } from 'react-icons/fi'
 
@@ -65,13 +67,15 @@ const socialLink = css`
 `
 
 export default function Footer() {
+  const { language } = useLanguage()
+  const t = translations[language].footer
   const year = new Date().getFullYear()
 
   return (
     <footer css={footerStyle}>
       <div css={footerInner}>
         <p css={copyText}>
-          © {year} Made with <Heart size={14} color="#ef4444" fill="#ef4444" /> by{' '}
+          © {year} {t.madeWith} <Heart size={14} color="#ef4444" fill="#ef4444" /> {t.by}{' '}
           <a href="#home">Abdullah Mirsab</a>
         </p>
         <div css={socialLinks}>

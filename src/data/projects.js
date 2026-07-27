@@ -10,7 +10,7 @@ export const projects = [
     image: gotjobImg,
     stats: ['700,000 +', '500 +', '1,500,000 +'],
     statLabels: ['Kandidat yang mendapat posisi', 'Perusahaan Terpercaya', 'Kandidat Aktif dan Berkembang'],
-    liveUrl: '#',
+    liveUrl: '/demo/gotjob',
     tags: ['React', 'Node.js', 'Firebase'],
   },
   {
@@ -19,7 +19,7 @@ export const projects = [
     description:
       'Employee Self Service merupakan platform absensi berbasis geolokasi yang memungkinkan karyawan melakukan check-in dengan mudah.',
     image: essImg,
-    liveUrl: '#',
+    liveUrl: '/demo/ess',
     tags: ['React', 'Tailwind', 'Firebase'],
   },
   {
@@ -28,7 +28,7 @@ export const projects = [
     description:
       'Sistem manajemen perpustakaan digital yang mengelola peminjaman, pengembalian, dan katalog buku secara efisien.',
     image: null,
-    liveUrl: '#',
+    liveUrl: '/demo/library',
     tags: ['Laravel', 'Bootstrap', 'MySQL'],
   },
   {
@@ -37,7 +37,7 @@ export const projects = [
     description:
       'Platform e-commerce modern dengan fitur keranjang belanja, pembayaran, dan manajemen produk yang lengkap.',
     image: null,
-    liveUrl: '#',
+    liveUrl: '/demo/ecommerce',
     tags: ['React', 'Node.js', 'MongoDB'],
   },
   {
@@ -46,7 +46,7 @@ export const projects = [
     description:
       'Aplikasi manajemen tugas dengan fitur drag-and-drop, kategori, dan notifikasi untuk meningkatkan produktivitas.',
     image: null,
-    liveUrl: '#',
+    liveUrl: '/demo/taskmanager',
     tags: ['React', 'Firebase', 'MUI'],
   },
   {
@@ -55,7 +55,7 @@ export const projects = [
     description:
       'Blog pribadi dengan CMS sederhana, fitur komentar, dan optimasi SEO untuk berbagi artikel teknologi.',
     image: null,
-    liveUrl: '#',
+    liveUrl: '/demo/blog',
     tags: ['Next.js', 'Tailwind', 'Vercel'],
   },
 ]

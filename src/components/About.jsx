@@ -1,6 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import { css, keyframes } from '@emotion/react'
 import { motion } from 'framer-motion'
+import { useLanguage } from '../context/LanguageContext'
+import { translations } from '../data/translations'
 
 const aboutSection = css`
   position: relative;
@@ -99,12 +101,15 @@ const silhouetteStyle = css`
 // Silhouette placeholder SVG
 const SilhouettePlaceholder = () => (
   <svg css={silhouetteStyle} viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="150" cy="130" r="55" fill="#2a2a5e"/>
-    <ellipse cx="150" cy="260" rx="85" ry="65" fill="#2a2a5e"/>
+    <circle cx="150" cy="130" r="55" fill="#2a2a5e" />
+    <ellipse cx="150" cy="260" rx="85" ry="65" fill="#2a2a5e" />
   </svg>
 )
 
 export default function About() {
+  const { language } = useLanguage()
+  const t = translations[language].about
+
   return (
     <section id="about" css={aboutSection}>
       <div css={aboutGrid}>
@@ -115,17 +120,10 @@ export default function About() {
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
         >
-          <h2 css={helloText}>Hello, I'm</h2>
+          <h2 css={helloText}>{language === 'en' ? "Hello, I'm" : "Halo, Saya"}</h2>
           <h1 css={nameText}>Abdullah Mirsab</h1>
           <p css={bioText}>
-            seorang lulusan SMK jurusan Rekayasa Perangkat Lunak yang melanjutkan studi di
-            United Tractors School IT Programmer. Saya fokus di bidang pengembangan web,
-            dengan keahlian dalam menciptakan aplikasi web yang responsif dan fungsional,
-            sekaligus memiliki pengalaman dalam bidang IT Support, khususnya dalam menangani
-            permasalahan teknis baik secara remote maupun langsung. Dengan latar belakang
-            pemrograman dan dukungan teknis, saya berkomitmen untuk menciptakan pengalaman
-            digital yang efektif serta memberikan solusi terbaik, baik dalam pengembangan
-            sistem maupun penanganan kendala IT sehari-hari.
+            {t.description}
           </p>
         </motion.div>
 

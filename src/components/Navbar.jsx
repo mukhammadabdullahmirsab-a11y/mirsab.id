@@ -2,14 +2,12 @@
 import { useState, useEffect } from 'react'
 import { css, keyframes } from '@emotion/react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, Globe } from 'lucide-react'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext'
+import { translations } from '../data/translations'
 
-const navLinks = [
-  { id: 'home', label: 'Home' },
-  { id: 'about', label: 'About' },
-  { id: 'portfolio', label: 'Portofolio' },
-  { id: 'contact', label: 'Contact' },
-]
+const navLinkIds = ['home', 'about', 'portfolio', 'contact']
 
 const shimmer = keyframes`
   0% { background-position: -200% center; }
@@ -127,6 +125,31 @@ const mobileMenuBtn = css`
   }
 `
 
+const langToggleBtn = css`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(124, 58, 237, 0.15);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  color: #c084fc;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  margin-left: 16px;
+
+  &:hover {
+    background: rgba(124, 58, 237, 0.25);
+  }
+
+  @media (max-width: 768px) {
+    margin-left: auto;
+    margin-right: 12px;
+  }
+`
+
 const mobileMenuStyle = css`
   position: fixed;
   top: var(--nav-height);
@@ -161,19 +184,23 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
   const [mobileOpen, setMobileOpen] = useState(false)
+  const navigate = useNavigate()
+  const location = useLocation()
+  const { language, toggleLanguage } = useLanguage()
+  const t = translations[language]
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50)
 
       // Determine active section
-      const sections = navLinks.map((l) => document.getElementById(l.id))
+      const sections = navLinkIds.map((id) => document.getElementById(id))
       const scrollPos = window.scrollY + 150
 
       for (let i = sections.length - 1; i >= 0; i--) {
         const section = sections[i]
         if (section && section.offsetTop <= scrollPos) {
-          setActiveSection(navLinks[i].id)
+          setActiveSection(navLinkIds[i])
           break
         }
       }
@@ -184,11 +211,16 @@ export default function Navbar() {
   }, [])
 
   const scrollTo = (id) => {
-    const el = document.getElementById(id)
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' })
-    }
     setMobileOpen(false)
+    if (location.pathname !== '/') {
+      navigate('/')
+      // Need a slight delay to allow rendering before scrolling
+      setTimeout(() => {
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+      }, 100)
+    } else {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+    }
   }
 
   return (
@@ -207,17 +239,22 @@ export default function Navbar() {
         </div>
 
         <ul css={navLinksStyle}>
-          {navLinks.map((link) => (
-            <li key={link.id}>
+          {navLinkIds.map((id) => (
+            <li key={id}>
               <a
-                css={navLinkStyle(activeSection === link.id)}
-                onClick={() => scrollTo(link.id)}
+                css={navLinkStyle(activeSection === id)}
+                onClick={() => scrollTo(id)}
               >
-                {link.label}
+                {t.nav[id]}
               </a>
             </li>
           ))}
         </ul>
+
+        <button css={langToggleBtn} onClick={toggleLanguage}>
+          <Globe size={16} />
+          {language.toUpperCase()}
+        </button>
 
         <button css={mobileMenuBtn} onClick={() => setMobileOpen(!mobileOpen)}>
           {mobileOpen ? <X size={24} /> : <Menu size={24} />}
@@ -233,13 +270,13 @@ export default function Navbar() {
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            {navLinks.map((link) => (
+            {navLinkIds.map((id) => (
               <a
-                key={link.id}
+                key={id}
                 css={mobileNavLink}
-                onClick={() => scrollTo(link.id)}
+                onClick={() => scrollTo(id)}
               >
-                {link.label}
+                {t.nav[id]}
               </a>
             ))}
           </motion.div>

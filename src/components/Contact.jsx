@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { css } from '@emotion/react'
 import { motion } from 'framer-motion'
 import {
@@ -11,6 +11,8 @@ import {
   UserCircle,
 } from 'lucide-react'
 import { FiGithub, FiLinkedin, FiInstagram } from 'react-icons/fi'
+import { useLanguage } from '../context/LanguageContext'
+import { translations } from '../data/translations'
 
 const contactSection = css`
   position: relative;
@@ -380,20 +382,18 @@ const SEED_COMMENTS = [
 ]
 
 export default function Contact() {
+  const { language } = useLanguage()
+  const t = translations[language].contact
+
   const [contactForm, setContactForm] = useState({ name: '', email: '', message: '' })
   const [commentForm, setCommentForm] = useState({ name: '', message: '' })
-  const [comments, setComments] = useState([])
   const [contactSent, setContactSent] = useState(false)
-
-  useEffect(() => {
+  const [comments, setComments] = useState(() => {
     const stored = localStorage.getItem('portfolio_comments')
-    if (stored) {
-      setComments(JSON.parse(stored))
-    } else {
-      setComments(SEED_COMMENTS)
-      localStorage.setItem('portfolio_comments', JSON.stringify(SEED_COMMENTS))
-    }
-  }, [])
+    if (stored) return JSON.parse(stored)
+    localStorage.setItem('portfolio_comments', JSON.stringify(SEED_COMMENTS))
+    return SEED_COMMENTS
+  })
 
   const handleContactSubmit = (e) => {
     e.preventDefault()
@@ -431,9 +431,9 @@ export default function Contact() {
     <section id="contact" css={contactSection}>
       <div css={container}>
         <div css={sectionHeader} data-aos="fade-up">
-          <h2 css={sectionTitle}>Get In Touch</h2>
+          <h2 css={sectionTitle}>{t.title}</h2>
           <p css={sectionSubtitle}>
-            Feel free to reach out for collaboration or just a friendly hello!
+            {t.subtitle}
           </p>
         </div>
 
@@ -447,14 +447,14 @@ export default function Contact() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h3 css={formTitle}>Send Message</h3>
+              <h3 css={formTitle}>{t.sendMessage}</h3>
               <form onSubmit={handleContactSubmit}>
                 <div css={inputGroup}>
                   <User size={18} css={inputIcon} />
                   <input
                     css={inputStyle}
                     type="text"
-                    placeholder="Your Name"
+                    placeholder={t.placeholders.name}
                     value={contactForm.name}
                     onChange={(e) =>
                       setContactForm((p) => ({ ...p, name: e.target.value }))
@@ -466,7 +466,7 @@ export default function Contact() {
                   <input
                     css={inputStyle}
                     type="email"
-                    placeholder="Your Email"
+                    placeholder={t.placeholders.email}
                     value={contactForm.email}
                     onChange={(e) =>
                       setContactForm((p) => ({ ...p, email: e.target.value }))
@@ -477,7 +477,7 @@ export default function Contact() {
                   <MessageSquare size={18} css={textareaIcon} />
                   <textarea
                     css={textareaStyle}
-                    placeholder="Your Message"
+                    placeholder={t.placeholders.message}
                     value={contactForm.message}
                     onChange={(e) =>
                       setContactForm((p) => ({ ...p, message: e.target.value }))
@@ -486,7 +486,7 @@ export default function Contact() {
                 </div>
                 <button type="submit" css={submitBtn}>
                   <Send size={18} />
-                  {contactSent ? 'Message Sent!' : 'Send Message'}
+                  {contactSent ? t.messageSent : t.sendMessage}
                 </button>
               </form>
             </motion.div>
@@ -498,7 +498,7 @@ export default function Contact() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <h4 css={connectTitle}>Connect With Me</h4>
+              <h4 css={connectTitle}>{t.connectTitle}</h4>
               <div css={connectGrid}>
                 <a
                   href="https://github.com/mukhammadabdullahmirsab-a11y/"
@@ -546,14 +546,14 @@ export default function Contact() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h3 css={commentsTitle}>💬 Leave a Comment</h3>
+            <h3 css={commentsTitle}>💬 {t.leaveComment}</h3>
 
             <form onSubmit={handleCommentSubmit}>
               <div css={commentInputGroup}>
                 <input
                   css={commentInput}
                   type="text"
-                  placeholder="Enter your name"
+                  placeholder={t.placeholders.commentName}
                   value={commentForm.name}
                   onChange={(e) =>
                     setCommentForm((p) => ({ ...p, name: e.target.value }))
@@ -562,11 +562,11 @@ export default function Contact() {
               </div>
               <div css={commentInputGroup}>
                 <label css={commentLabel}>
-                  Message <span>*</span>
+                  {t.labels.message} <span>*</span>
                 </label>
                 <textarea
                   css={commentTextarea}
-                  placeholder="Write your message here..."
+                  placeholder={t.placeholders.commentMessage}
                   value={commentForm.message}
                   onChange={(e) =>
                     setCommentForm((p) => ({ ...p, message: e.target.value }))
@@ -576,7 +576,7 @@ export default function Contact() {
               </div>
               <button type="submit" css={postBtn}>
                 <Send size={16} />
-                Post Comment
+                {t.postComment}
               </button>
             </form>
 
