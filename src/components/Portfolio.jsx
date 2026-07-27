@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { css } from '@emotion/react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
-import { ExternalLink, ArrowRight, Award } from 'lucide-react'
+import { ExternalLink, ArrowRight, Award, X, ZoomIn, Calendar, Building2 } from 'lucide-react'
 import { projects } from '../data/projects'
 import { certificates } from '../data/certificates'
 import { techStack } from '../data/techStack'
@@ -158,77 +158,196 @@ const detailsBtn = css`
 /* ============ CERTIFICATES TAB ============ */
 const certsGrid = css`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 `
 
 const certCard = css`
   background: rgba(20, 20, 50, 0.5);
   border: 1px solid rgba(100, 100, 200, 0.12);
-  border-radius: 16px;
-  padding: 24px;
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 14px;
+  border-radius: 20px;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  cursor: pointer;
+  position: relative;
 
   &:hover {
-    border-color: rgba(124, 58, 237, 0.3);
-    transform: translateY(-4px);
-    box-shadow: 0 8px 30px rgba(124, 58, 237, 0.12);
+    border-color: rgba(124, 58, 237, 0.4);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 40px rgba(124, 58, 237, 0.2);
+  }
+
+  &:hover img {
+    transform: scale(1.05);
+  }
+
+  &:hover .cert-overlay {
+    opacity: 1;
   }
 `
 
 const certImageWrapper = css`
   width: 100%;
-  height: 220px;
-  background: rgba(10, 10, 25, 0.4);
-  border-radius: 12px;
+  height: 280px;
+  background: rgba(10, 10, 25, 0.6);
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(100, 100, 200, 0.1);
+  position: relative;
+
+  @media (max-width: 768px) {
+    height: 220px;
+  }
 `
 
 const certImageStyle = css`
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  transition: transform 0.3s ease;
-  &:hover {
-    transform: scale(1.05);
-  }
+  object-fit: cover;
+  transition: transform 0.5s ease;
+`
+
+const certOverlay = css`
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+`
+
+const certZoomIcon = css`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(124, 58, 237, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  backdrop-filter: blur(4px);
 `
 
 const certIconStyle = css`
-  width: 60px;
-  height: 60px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.2), rgba(168, 85, 247, 0.1));
-  border: 1px solid rgba(124, 58, 237, 0.2);
+  width: 100%;
+  height: 280px;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(168, 85, 247, 0.05));
   display: flex;
   align-items: center;
   justify-content: center;
   color: #c084fc;
+
+  @media (max-width: 768px) {
+    height: 220px;
+  }
+`
+
+const certBody = css`
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 `
 
 const certTitle = css`
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #ffffff;
+  line-height: 1.4;
 `
 
 const certIssuer = css`
   color: #9ca3af;
   font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 `
 
 const certDate = css`
   color: #6b7280;
   font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+`
+
+const lightboxOverlay = css`
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  cursor: zoom-out;
+`
+
+const lightboxImage = css`
+  max-width: 90vw;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+`
+
+const lightboxClose = css`
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 10000;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+  }
+`
+
+const lightboxInfo = css`
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(20, 20, 50, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(100, 100, 200, 0.15);
+  border-radius: 16px;
+  padding: 16px 28px;
+  text-align: center;
+  z-index: 10000;
+  max-width: 500px;
+
+  h3 {
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  p {
+    color: #9ca3af;
+    font-size: 0.85rem;
+  }
 `
 
 /* ============ TECH STACK TAB ============ */
@@ -296,9 +415,15 @@ const cardVariants = {
 
 export default function Portfolio() {
   const [tab, setTab] = useState(0)
+  const [lightbox, setLightbox] = useState(null)
   const navigate = useNavigate()
   const { language } = useLanguage()
   const t = translations[language].portfolio
+
+  const openLightbox = useCallback((cert) => {
+    if (cert.image) setLightbox(cert)
+  }, [])
+  const closeLightbox = useCallback(() => setLightbox(null), [])
 
   return (
     <section id="portfolio" css={portfolioSection}>
@@ -378,19 +503,26 @@ export default function Portfolio() {
               exit="exit"
             >
               {certificates.map((cert) => (
-                <motion.div key={cert.id} css={certCard} variants={cardVariants}>
+                <motion.div key={cert.id} css={certCard} variants={cardVariants} onClick={() => openLightbox(cert)}>
                   {cert.image ? (
                     <div css={certImageWrapper}>
-                      <img src={cert.image} alt={cert.title} css={certImageStyle} />
+                      <img src={cert.image} alt={cert.title} css={certImageStyle} loading="lazy" />
+                      <div css={certOverlay} className="cert-overlay">
+                        <div css={certZoomIcon}>
+                          <ZoomIn size={22} />
+                        </div>
+                      </div>
                     </div>
                   ) : (
                     <div css={certIconStyle}>
-                      <Award size={28} />
+                      <Award size={48} />
                     </div>
                   )}
-                  <h3 css={certTitle}>{cert.title}</h3>
-                  <p css={certIssuer}>{cert.issuer}</p>
-                  <span css={certDate}>{cert.date}</span>
+                  <div css={certBody}>
+                    <h3 css={certTitle}>{cert.title}</h3>
+                    <p css={certIssuer}><Building2 size={13} /> {cert.issuer}</p>
+                    <span css={certDate}><Calendar size={13} /> {cert.date}</span>
+                  </div>
                 </motion.div>
               ))}
             </motion.div>
@@ -415,6 +547,37 @@ export default function Portfolio() {
           )}
         </AnimatePresence>
       </div>
+
+      {/* Lightbox Modal */}
+      <AnimatePresence>
+        {lightbox && (
+          <motion.div
+            css={lightboxOverlay}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={closeLightbox}
+          >
+            <button css={lightboxClose} onClick={closeLightbox}>
+              <X size={20} />
+            </button>
+            <motion.img
+              src={lightbox.image}
+              alt={lightbox.title}
+              css={lightboxImage}
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              onClick={(e) => e.stopPropagation()}
+            />
+            <div css={lightboxInfo} onClick={(e) => e.stopPropagation()}>
+              <h3>{lightbox.title}</h3>
+              <p>{lightbox.issuer} • {lightbox.date}</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   )
 }
