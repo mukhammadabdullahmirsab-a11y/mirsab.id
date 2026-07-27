@@ -181,6 +181,28 @@ const certCard = css`
   }
 `
 
+const certImageWrapper = css`
+  width: 100%;
+  height: 220px;
+  background: rgba(10, 10, 25, 0.4);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(100, 100, 200, 0.1);
+`
+
+const certImageStyle = css`
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+  &:hover {
+    transform: scale(1.05);
+  }
+`
+
 const certIconStyle = css`
   width: 60px;
   height: 60px;
@@ -357,9 +379,15 @@ export default function Portfolio() {
             >
               {certificates.map((cert) => (
                 <motion.div key={cert.id} css={certCard} variants={cardVariants}>
-                  <div css={certIconStyle}>
-                    <Award size={28} />
-                  </div>
+                  {cert.image ? (
+                    <div css={certImageWrapper}>
+                      <img src={cert.image} alt={cert.title} css={certImageStyle} />
+                    </div>
+                  ) : (
+                    <div css={certIconStyle}>
+                      <Award size={28} />
+                    </div>
+                  )}
                   <h3 css={certTitle}>{cert.title}</h3>
                   <p css={certIssuer}>{cert.issuer}</p>
                   <span css={certDate}>{cert.date}</span>
