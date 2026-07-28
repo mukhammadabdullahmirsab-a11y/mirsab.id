@@ -2,30 +2,94 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Abdullah Mirsab — Web Developer & IT Support. Building User-Friendly Websites & Delivering Reliable IT Support." />
-    <meta name="keywords" content="Abdullah Mirsab, Web Developer, IT Support, Portfolio, React, Laravel" />
+
+    <!-- ====== Favicon ====== -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+
+    <!-- ====== SEO Meta Tags ====== -->
+    <title>Abdullah Mirsab — Web Developer & IT Support Portfolio</title>
+    <meta name="description" content="Portfolio resmi Abdullah Mirsab — Web Developer & IT Support profesional. Membangun website modern yang user-friendly menggunakan React, Laravel, dan teknologi terkini." />
+    <meta name="keywords" content="Abdullah Mirsab, Web Developer, IT Support, Portfolio, React, Laravel, Vite, Full Stack Developer, Indonesia" />
     <meta name="author" content="Abdullah Mirsab" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://mirsab-id.vercel.app/" />
+    <meta name="theme-color" content="#0a0a1a" />
 
-    <!-- Open Graph -->
-    <meta property="og:title" content="Abdullah Mirsab — Portfolio" />
-    <meta property="og:description" content="Web Developer & IT Support — Building User-Friendly Websites & Delivering Reliable IT Support." />
+    <!-- ====== Open Graph (Facebook, WhatsApp, Telegram, etc.) ====== -->
+    <meta property="og:title" content="Abdullah Mirsab — Web Developer & IT Support" />
+    <meta property="og:description" content="Portfolio resmi Abdullah Mirsab — Membangun website modern yang user-friendly & menyediakan IT Support yang handal." />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://mirsab.id" />
+    <meta property="og:url" content="https://mirsab-id.vercel.app/" />
+    <meta property="og:image" content="https://mirsab-id.vercel.app/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Abdullah Mirsab — Web Developer & IT Support Portfolio" />
+    <meta property="og:site_name" content="Abdullah Mirsab Portfolio" />
+    <meta property="og:locale" content="id_ID" />
 
-    <!-- Google Fonts - Poppins -->
+    <!-- ====== Twitter Card ====== -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Abdullah Mirsab — Web Developer & IT Support" />
+    <meta name="twitter:description" content="Portfolio resmi Abdullah Mirsab — Membangun website modern yang user-friendly & menyediakan IT Support yang handal." />
+    <meta name="twitter:image" content="https://mirsab-id.vercel.app/og-image.png" />
+
+    <!-- ====== Google Fonts - Poppins ====== -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet" />
 
-    <!-- AOS CSS -->
+    <!-- ====== AOS CSS ====== -->
     <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
 
-    <title>Abdullah Mirsab — Portfolio</title>
+    <!-- ====== Loading Spinner Styles ====== -->
+    <style>
+      .app-loader {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background: #0a0a1a;
+        font-family: 'Poppins', sans-serif;
+        gap: 24px;
+      }
+      .app-loader__spinner {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        border: 3px solid rgba(124, 58, 237, 0.15);
+        border-top-color: #7c3aed;
+        animation: app-spin 0.8s ease-in-out infinite;
+      }
+      .app-loader__text {
+        color: #9ca3af;
+        font-size: 0.9rem;
+        letter-spacing: 0.5px;
+      }
+      @keyframes app-spin {
+        to { transform: rotate(360deg); }
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <!-- Loading spinner shown while JS bundle loads, auto-replaced by React -->
+    <div id="root">
+      <div class="app-loader">
+        <div class="app-loader__spinner"></div>
+        <p class="app-loader__text">Memuat...</p>
+      </div>
+    </div>
+
+    <!-- Fallback for browsers with JS disabled -->
+    <noscript>
+      <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#0a0a1a;color:#9ca3af;font-family:'Poppins',sans-serif;text-align:center;padding:2rem;">
+        <p>Mohon aktifkan JavaScript pada browser Anda untuk menggunakan website ini.</p>
+      </div>
+    </noscript>
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
