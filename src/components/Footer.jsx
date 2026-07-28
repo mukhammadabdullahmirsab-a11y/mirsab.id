@@ -48,21 +48,27 @@ const socialLinks = css`
 `
 
 const socialLink = css`
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
   border: 1px solid rgba(100, 100, 200, 0.15);
   color: #6b7280;
-  transition: all 0.3s ease;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
 
   &:hover {
     color: #c084fc;
     border-color: #7c3aed;
     background: rgba(124, 58, 237, 0.1);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.25);
+  }
+
+  &:active {
+    transform: translateY(-1px) scale(0.98);
   }
 `
 

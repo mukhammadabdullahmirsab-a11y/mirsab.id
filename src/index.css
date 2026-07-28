@@ -32,6 +32,16 @@
 
   --shadow-glow: 0 0 30px rgba(124, 58, 237, 0.3);
   --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --shadow-card-hover: 0 16px 48px rgba(124, 58, 237, 0.2);
+
+  /* Spacing tokens */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
+  --space-2xl: 64px;
+  --space-3xl: 100px;
 }
 
 * {
@@ -51,6 +61,14 @@ body {
   color: var(--text-primary);
   overflow-x: hidden;
   line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Selection */
+::selection {
+  background: rgba(124, 58, 237, 0.35);
+  color: #ffffff;
 }
 
 ::-webkit-scrollbar {
@@ -140,7 +158,7 @@ body {
   position: relative;
   z-index: 1;
   min-height: 100vh;
-  padding: 100px 5% 60px;
+  padding: var(--space-3xl) 5% var(--space-2xl);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -163,33 +181,35 @@ body {
 }
 
 /* ============================================
-   GLASS CARD
+   GLASS CARD (Enhanced)
    ============================================ */
 
 .glass-card {
   background: var(--bg-card);
   border: 1px solid var(--border-card);
   border-radius: 16px;
-  backdrop-filter: blur(12px);
-  transition: all 0.3s ease;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
 .glass-card:hover {
   background: var(--bg-card-hover);
   border-color: var(--border-card-hover);
-  box-shadow: var(--shadow-glow);
+  box-shadow: var(--shadow-card-hover);
   transform: translateY(-4px);
 }
 
 /* ============================================
-   GRADIENT BUTTON
+   GRADIENT BUTTON (Enhanced)
    ============================================ */
 
 .btn-gradient {
   background: var(--gradient-button);
   color: #fff;
   border: none;
-  padding: 12px 32px;
+  padding: 14px 32px;
   border-radius: 12px;
   font-family: var(--font-main);
   font-size: 1rem;
@@ -198,20 +218,40 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
+  min-height: 48px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-gradient::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .btn-gradient:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 30px rgba(124, 58, 237, 0.45);
+}
+
+.btn-gradient:hover::before {
+  opacity: 1;
+}
+
+.btn-gradient:active {
+  transform: translateY(-1px) scale(0.98);
 }
 
 .btn-outline {
   background: transparent;
   color: var(--text-primary);
   border: 1px solid var(--border-card);
-  padding: 12px 32px;
+  padding: 14px 32px;
   border-radius: 12px;
   font-family: var(--font-main);
   font-size: 1rem;
@@ -220,36 +260,45 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
+  min-height: 48px;
 }
 
 .btn-outline:hover {
   border-color: var(--accent-purple);
   background: rgba(124, 58, 237, 0.1);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.2);
+}
+
+.btn-outline:active {
+  transform: translateY(-1px);
 }
 
 /* ============================================
-   TAG / BADGE
+   TAG / BADGE (Enhanced)
    ============================================ */
 
 .tech-tag {
   display: inline-block;
-  padding: 6px 16px;
+  padding: 8px 18px;
   border-radius: 50px;
   border: 1px solid var(--border-card);
   background: rgba(124, 58, 237, 0.08);
   color: var(--text-secondary);
   font-size: 0.85rem;
   font-weight: 500;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
 }
 
 .tech-tag:hover {
   border-color: var(--accent-purple);
   color: var(--accent-violet);
-  background: rgba(124, 58, 237, 0.15);
+  background: rgba(124, 58, 237, 0.18);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.15);
 }
 
 /* ============================================
@@ -258,7 +307,7 @@ body {
 
 @media (max-width: 768px) {
   .section {
-    padding: 80px 4% 40px;
+    padding: 80px 5% 40px;
     min-height: auto;
   }
 
@@ -269,6 +318,12 @@ body {
   .bg-blob {
     width: 250px !important;
     height: 250px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .section {
+    padding: 70px 4% 32px;
   }
 }
 
@@ -300,4 +355,14 @@ body {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
+}
+
+/* ============================================
+   FOCUS VISIBLE (Accessibility)
+   ============================================ */
+
+*:focus-visible {
+  outline: 2px solid var(--accent-purple);
+  outline-offset: 2px;
+  border-radius: 4px;
 }

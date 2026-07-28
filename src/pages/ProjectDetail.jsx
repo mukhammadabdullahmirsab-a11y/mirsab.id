@@ -32,17 +32,23 @@ const backBtn = css`
   background: rgba(124, 58, 237, 0.1);
   color: #c084fc;
   border: 1px solid rgba(124, 58, 237, 0.3);
-  padding: 10px 20px;
-  border-radius: 8px;
+  padding: 10px 24px;
+  border-radius: 10px;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 600;
   margin-bottom: 40px;
-  transition: all 0.2s;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 48px;
 
   &:hover {
     background: rgba(124, 58, 237, 0.2);
-    transform: translateX(-4px);
+    transform: translateX(-4px) scale(1.02);
+    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.2);
+  }
+
+  &:active {
+    transform: translateX(-2px) scale(0.98);
   }
 `
 
@@ -65,12 +71,13 @@ const tagsRow = css`
 `
 
 const tagStyle = css`
-  padding: 4px 12px;
+  padding: 6px 16px;
   border-radius: 50px;
   background: rgba(20, 20, 50, 0.6);
   border: 1px solid rgba(100, 100, 200, 0.2);
   color: #d1d5db;
   font-size: 0.85rem;
+  font-weight: 500;
 `
 
 const imageContainer = css`
@@ -107,18 +114,23 @@ const linksRow = css`
 const linkBtn = css`
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   background: linear-gradient(135deg, #7c3aed, #c084fc);
   color: #ffffff;
-  padding: 12px 24px;
+  padding: 14px 28px;
   border-radius: 12px;
   text-decoration: none;
   font-weight: 600;
-  transition: all 0.3s;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 48px;
 
   &:hover {
-    transform: translateY(-2px);
+    transform: translateY(-3px) scale(1.02);
     box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
+  }
+
+  &:active {
+    transform: translateY(-1px) scale(0.98);
   }
 `
 
@@ -129,7 +141,7 @@ const githubBtn = css`
   
   &:hover {
     background: rgba(40, 40, 70, 0.8);
-    box-shadow: none;
+    box-shadow: 0 8px 25px rgba(100, 100, 200, 0.15);
   }
 `
 

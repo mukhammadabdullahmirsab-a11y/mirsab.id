@@ -129,29 +129,30 @@ const textareaStyle = css`
 
 const submitBtn = css`
   width: 100%;
-  padding: 14px;
+  padding: 16px;
   background: linear-gradient(135deg, #7c3aed, #c084fc);
   color: #ffffff;
   border: none;
   border-radius: 12px;
   font-family: 'Poppins', sans-serif;
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  transition: all 0.3s ease;
-  margin-top: 8px;
+  gap: 10px;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: 16px;
+  min-height: 52px;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 12px 30px rgba(124, 58, 237, 0.4);
   }
 
   &:active {
-    transform: translateY(0);
+    transform: translateY(-1px) scale(0.99);
   }
 `
 
@@ -196,21 +197,24 @@ const connectGrid = css`
 const connectCard = css`
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 14px;
+  gap: 14px;
+  padding: 16px;
   background: rgba(20, 20, 50, 0.5);
   border: 1px solid rgba(100, 100, 200, 0.1);
   border-radius: 12px;
   color: #9ca3af;
-  font-size: 0.85rem;
+  font-size: 0.95rem;
+  font-weight: 500;
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 52px;
 
   &:hover {
-    border-color: rgba(124, 58, 237, 0.3);
-    background: rgba(124, 58, 237, 0.08);
+    border-color: rgba(124, 58, 237, 0.4);
+    background: rgba(124, 58, 237, 0.1);
     color: #c084fc;
-    transform: translateX(4px);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(124, 58, 237, 0.2);
   }
 
   svg {
@@ -295,13 +299,18 @@ const postBtn = css`
   align-items: center;
   justify-content: center;
   gap: 8px;
-  transition: all 0.3s ease;
-  margin-top: 8px;
-  margin-bottom: 24px;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: 12px;
+  margin-bottom: 28px;
+  min-height: 48px;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 10px 25px rgba(124, 58, 237, 0.4);
+  }
+
+  &:active {
+    transform: translateY(-1px) scale(0.99);
   }
 `
 

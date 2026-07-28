@@ -13,7 +13,11 @@ const heroSection = css`
   min-height: 100vh;
   display: flex;
   align-items: center;
-  padding: 100px 5% 40px;
+  padding: 120px 5% 60px;
+
+  @media (max-width: 768px) {
+    padding: 100px 5% 40px;
+  }
 `
 
 const heroGrid = css`
@@ -33,13 +37,22 @@ const heroGrid = css`
 `
 
 const heroTitle = css`
-  font-size: 3.5rem;
+  font-size: 3.8rem;
   font-weight: 800;
-  line-height: 1.15;
-  margin-bottom: 8px;
+  line-height: 1.1;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+
+  @media (max-width: 968px) {
+    font-size: 3rem;
+  }
 
   @media (max-width: 768px) {
-    font-size: 2.2rem;
+    font-size: 2.4rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 2rem;
   }
 `
 
@@ -70,13 +83,14 @@ const typewriterStyle = css`
 
 const descriptionStyle = css`
   color: #6b7280;
-  font-size: 1rem;
-  line-height: 1.7;
+  font-size: 1.05rem;
+  line-height: 1.75;
   max-width: 520px;
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 
   @media (max-width: 968px) {
-    margin: 0 auto 24px;
+    margin: 0 auto 28px;
+    max-width: 480px;
   }
 `
 
@@ -116,8 +130,8 @@ const socialsRow = css`
 `
 
 const socialIcon = css`
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -126,15 +140,19 @@ const socialIcon = css`
   background: rgba(20, 20, 50, 0.5);
   color: #9ca3af;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
 
   &:hover {
     border-color: #7c3aed;
     color: #c084fc;
     background: rgba(124, 58, 237, 0.15);
-    transform: translateY(-3px);
-    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+    transform: translateY(-4px) scale(1.08);
+    box-shadow: 0 6px 20px rgba(124, 58, 237, 0.35);
+  }
+
+  &:active {
+    transform: translateY(-1px) scale(1.02);
   }
 `
 
@@ -186,33 +204,37 @@ const statsContainer = css`
 `
 
 const statCard = css`
-  background: rgba(20, 20, 50, 0.6);
+  background: rgba(20, 20, 50, 0.5);
   border: 1px solid rgba(100, 100, 200, 0.12);
-  border-radius: 16px;
-  padding: 24px;
+  border-radius: 20px;
+  padding: 28px;
   text-align: center;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 
   &:hover {
-    border-color: rgba(124, 58, 237, 0.3);
-    transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(124, 58, 237, 0.15);
+    border-color: rgba(124, 58, 237, 0.35);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 36px rgba(124, 58, 237, 0.2);
+    background: rgba(30, 30, 70, 0.5);
   }
 
   h3 {
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: 700;
     background: linear-gradient(135deg, #7c3aed, #c084fc);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
 
   p {
     color: #9ca3af;
     font-size: 0.9rem;
+    font-weight: 500;
   }
 `
 

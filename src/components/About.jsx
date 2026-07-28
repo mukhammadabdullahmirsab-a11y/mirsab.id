@@ -39,28 +39,39 @@ const helloText = css`
 `
 
 const nameText = css`
-  font-size: 2.8rem;
+  font-size: 3.2rem;
   font-weight: 800;
   color: #ffffff;
   margin-bottom: 24px;
-  line-height: 1.2;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+
+  @media (max-width: 968px) {
+    font-size: 2.8rem;
+  }
 
   @media (max-width: 768px) {
-    font-size: 2rem;
+    font-size: 2.2rem;
   }
 `
 
 const bioText = css`
   color: #9ca3af;
-  font-size: 1rem;
-  line-height: 1.8;
+  font-size: 1.05rem;
+  line-height: 1.85;
   text-align: justify;
+  max-width: 95%;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    max-width: 100%;
+  }
 `
 
 /* Profile Photo */
 const pulseGlow = keyframes`
-  0%, 100% { box-shadow: 0 0 20px rgba(124, 58, 237, 0.2), 0 0 60px rgba(124, 58, 237, 0.1); }
-  50% { box-shadow: 0 0 40px rgba(124, 58, 237, 0.4), 0 0 80px rgba(124, 58, 237, 0.15); }
+  0%, 100% { box-shadow: 0 0 20px rgba(124, 58, 237, 0.15), 0 0 60px rgba(124, 58, 237, 0.08); }
+  50% { box-shadow: 0 0 40px rgba(124, 58, 237, 0.3), 0 0 80px rgba(124, 58, 237, 0.15); }
 `
 
 const photoContainer = css`
@@ -74,21 +85,26 @@ const photoContainer = css`
 `
 
 const photoWrapper = css`
-  width: 300px;
-  height: 300px;
+  width: 320px;
+  height: 320px;
   border-radius: 50%;
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.3), rgba(20, 20, 50, 0.8));
-  border: 3px solid rgba(124, 58, 237, 0.2);
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.25), rgba(20, 20, 50, 0.8));
+  border: 4px solid rgba(124, 58, 237, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: ${pulseGlow} 4s ease-in-out infinite;
+  animation: ${pulseGlow} 5s ease-in-out infinite;
   overflow: hidden;
   position: relative;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    transform: scale(1.02);
+  }
 
   @media (max-width: 768px) {
-    width: 230px;
-    height: 230px;
+    width: 260px;
+    height: 260px;
   }
 `
 

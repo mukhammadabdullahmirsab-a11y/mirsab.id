@@ -25,10 +25,12 @@ const navStyle = (scrolled) => css`
   justify-content: space-between;
   padding: 0 5%;
   z-index: 1000;
-  transition: all 0.3s ease;
-  background: ${scrolled ? 'rgba(10, 10, 26, 0.85)' : 'transparent'};
-  backdrop-filter: ${scrolled ? 'blur(20px)' : 'none'};
-  border-bottom: ${scrolled ? '1px solid rgba(124, 58, 237, 0.1)' : 'none'};
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: ${scrolled ? 'rgba(10, 10, 26, 0.8)' : 'transparent'};
+  backdrop-filter: ${scrolled ? 'blur(24px) saturate(180%)' : 'none'};
+  -webkit-backdrop-filter: ${scrolled ? 'blur(24px) saturate(180%)' : 'none'};
+  border-bottom: ${scrolled ? '1px solid rgba(124, 58, 237, 0.12)' : '1px solid transparent'};
+  box-shadow: ${scrolled ? '0 4px 30px rgba(0, 0, 0, 0.3)' : 'none'};
 `
 
 const logoStyle = css`
@@ -73,15 +75,18 @@ const navLinksStyle = css`
 `
 
 const navLinkStyle = (active) => css`
-  padding: 8px 20px;
+  padding: 10px 20px;
   color: ${active ? '#ffffff' : '#9ca3af'};
   font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   border-radius: 8px;
   text-decoration: none;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
 
   &::after {
     content: '';
@@ -91,9 +96,10 @@ const navLinkStyle = (active) => css`
     transform: translateX(-50%);
     width: ${active ? '60%' : '0'};
     height: 2px;
-    background: #7c3aed;
+    background: linear-gradient(90deg, #7c3aed, #a855f7);
     border-radius: 2px;
-    transition: width 0.3s ease;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: ${active ? '0 0 8px rgba(124, 58, 237, 0.5)' : 'none'};
   }
 
   &:hover {
@@ -110,12 +116,18 @@ const mobileMenuBtn = css`
   border: none;
   color: #ffffff;
   cursor: pointer;
-  padding: 8px;
-  border-radius: 8px;
-  transition: background 0.2s;
+  padding: 10px;
+  border-radius: 10px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 44px;
+  min-height: 44px;
 
   &:hover {
     background: rgba(124, 58, 237, 0.15);
+  }
+
+  &:active {
+    transform: scale(0.92);
   }
 
   @media (max-width: 768px) {
@@ -156,27 +168,35 @@ const mobileMenuStyle = css`
   left: 0;
   width: 100%;
   background: rgba(10, 10, 26, 0.95);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(124, 58, 237, 0.1);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-bottom: 1px solid rgba(124, 58, 237, 0.12);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   z-index: 999;
   overflow: hidden;
 `
 
 const mobileNavLink = css`
-  display: block;
-  padding: 16px 5%;
+  display: flex;
+  align-items: center;
+  padding: 18px 6%;
   color: #9ca3af;
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 500;
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   border-bottom: 1px solid rgba(100, 100, 200, 0.08);
+  min-height: 56px;
 
   &:hover {
     color: #ffffff;
     background: rgba(124, 58, 237, 0.1);
-    padding-left: 7%;
+    padding-left: 8%;
+  }
+
+  &:active {
+    background: rgba(124, 58, 237, 0.18);
   }
 `
 

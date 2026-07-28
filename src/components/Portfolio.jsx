@@ -36,9 +36,11 @@ const tabsWrapper = css`
   .MuiTab-root {
     min-height: 48px;
     border-radius: 8px;
-    transition: all 0.3s ease;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     &.Mui-selected {
       background: rgba(124, 58, 237, 0.15);
+      color: #ffffff;
+      font-weight: 600;
     }
   }
 `
@@ -59,12 +61,15 @@ const projectCard = css`
   border: 1px solid rgba(100, 100, 200, 0.12);
   border-radius: 20px;
   overflow: hidden;
-  transition: all 0.4s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
 
   &:hover {
-    border-color: rgba(124, 58, 237, 0.3);
-    transform: translateY(-6px);
-    box-shadow: 0 12px 40px rgba(124, 58, 237, 0.15);
+    border-color: rgba(124, 58, 237, 0.35);
+    transform: translateY(-8px);
+    box-shadow: 0 16px 40px rgba(124, 58, 237, 0.2);
+    background: rgba(30, 30, 70, 0.6);
   }
 `
 
@@ -122,11 +127,13 @@ const liveLink = css`
   align-items: center;
   gap: 6px;
   color: #a855f7;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 500;
   text-decoration: none;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
+  padding: 8px 4px;
+  min-height: 44px;
 
   &:hover {
     color: #c084fc;
@@ -138,7 +145,7 @@ const detailsBtn = css`
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 20px;
+  padding: 10px 24px;
   border-radius: 10px;
   border: 1px solid rgba(100, 100, 200, 0.2);
   background: transparent;
@@ -147,11 +154,13 @@ const detailsBtn = css`
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 44px;
 
   &:hover {
     border-color: #7c3aed;
     background: rgba(124, 58, 237, 0.1);
+    transform: translateY(-2px);
   }
 `
 
@@ -171,14 +180,17 @@ const certCard = css`
   border: 1px solid rgba(100, 100, 200, 0.12);
   border-radius: 20px;
   overflow: hidden;
-  transition: all 0.4s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   position: relative;
+  display: flex;
+  flex-direction: column;
 
   &:hover {
     border-color: rgba(124, 58, 237, 0.4);
-    transform: translateY(-6px);
-    box-shadow: 0 12px 40px rgba(124, 58, 237, 0.2);
+    transform: translateY(-8px);
+    box-shadow: 0 16px 40px rgba(124, 58, 237, 0.2);
+    background: rgba(30, 30, 70, 0.6);
   }
 
   &:hover img {
@@ -377,13 +389,14 @@ const techCard = css`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 12px;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
   &:hover {
     border-color: rgba(124, 58, 237, 0.4);
-    transform: translateY(-6px);
-    box-shadow: 0 8px 25px rgba(124, 58, 237, 0.15);
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 12px 30px rgba(124, 58, 237, 0.2);
     background: rgba(30, 30, 70, 0.6);
   }
 
