@@ -1,7 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
+import { useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
+import SplashScreen from './components/SplashScreen'
 import ProjectDetail from './pages/ProjectDetail'
 import GotjobDemo from './pages/demos/GotjobDemo'
 import EssDemo from './pages/demos/EssDemo'
@@ -16,8 +18,12 @@ const appStyle = css`
 `
 
 export default function App() {
+  const [showSplash, setShowSplash] = useState(true)
+
   return (
     <div css={appStyle}>
+      {showSplash && <SplashScreen finishLoading={() => setShowSplash(false)} />}
+      
       {/* Background Effects */}
       <div className="bg-grid" />
       <div className="bg-blob bg-blob-1" />
