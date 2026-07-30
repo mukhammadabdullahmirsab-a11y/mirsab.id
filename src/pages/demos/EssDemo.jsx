@@ -81,9 +81,22 @@ export default function EssDemo() {
           }
         },
         (error) => {
-          setLocStatus('⚠️ Akses GPS ditolak atau gagal mendeteksi');
+          // Fallback to IP-based geolocation if GPS fails/denied (often happens in IG/FB in-app browsers)
+          fetch('https://ipwho.is/')
+            .then(res => res.json())
+            .then(data => {
+              if (data.success) {
+                setCoords({ lat: data.latitude, lng: data.longitude })
+                setLocStatus(`📍 ${data.city}, ${data.region} (Berdasarkan IP)`)
+              } else {
+                setLocStatus('⚠️ Gagal mendeteksi lokasi. Coba buka di Chrome/Safari.')
+              }
+            })
+            .catch(() => {
+              setLocStatus('⚠️ Gagal mendeteksi lokasi. Coba buka di Chrome/Safari.')
+            })
         },
-        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        { enableHighAccuracy: false, timeout: 10000, maximumAge: 0 }
       );
     } else {
       setLocStatus('⚠️ Browser tidak mendukung GPS');
