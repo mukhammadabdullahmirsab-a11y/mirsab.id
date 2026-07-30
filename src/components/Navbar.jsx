@@ -1,18 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { useState, useEffect } from 'react'
-import { css, keyframes } from '@emotion/react'
+import { css } from '@emotion/react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Globe } from 'lucide-react'
+import { FiMenu, FiX, FiGlobe } from 'react-icons/fi'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
 import { translations } from '../data/translations'
 
 const navLinkIds = ['home', 'about', 'portfolio', 'contact']
-
-const shimmer = keyframes`
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
-`
 
 const navStyle = (scrolled) => css`
   position: fixed;
@@ -63,11 +58,19 @@ const badgeStyle = css`
   }
 `
 
+const rightContainer = css`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+`
+
 const navLinksStyle = css`
   display: flex;
   align-items: center;
   gap: 8px;
   list-style: none;
+  margin: 0;
+  padding: 0;
 
   @media (max-width: 768px) {
     display: none;
@@ -110,6 +113,31 @@ const navLinkStyle = (active) => css`
   }
 `
 
+const langToggleBtn = css`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(124, 58, 237, 0.15);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  color: #c084fc;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  min-height: 44px;
+
+  &:hover {
+    background: rgba(124, 58, 237, 0.25);
+  }
+
+  @media (max-width: 768px) {
+    /* Slightly smaller padding on very small screens if needed */
+    padding: 8px 10px;
+  }
+`
+
 const mobileMenuBtn = css`
   display: none;
   background: none;
@@ -121,6 +149,7 @@ const mobileMenuBtn = css`
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   min-width: 44px;
   min-height: 44px;
+  z-index: 1001; /* Stay on top of mobile menu */
 
   &:hover {
     background: rgba(124, 58, 237, 0.15);
@@ -137,68 +166,88 @@ const mobileMenuBtn = css`
   }
 `
 
-const langToggleBtn = css`
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  background: rgba(124, 58, 237, 0.15);
-  border: 1px solid rgba(124, 58, 237, 0.3);
-  color: #c084fc;
-  padding: 6px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.85rem;
-  font-weight: 600;
-  transition: all 0.2s;
-  margin-left: 16px;
-
-  &:hover {
-    background: rgba(124, 58, 237, 0.25);
-  }
-
-  @media (max-width: 768px) {
-    margin-left: auto;
-    margin-right: 12px;
-  }
-`
-
-const mobileMenuStyle = css`
+/* Full-Screen Mobile Menu Overlay */
+const mobileMenuOverlay = css`
   position: fixed;
-  top: var(--nav-height);
-  left: 0;
-  width: 100%;
-  background: rgba(10, 10, 26, 0.95);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border-bottom: 1px solid rgba(124, 58, 237, 0.12);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  inset: 0;
+  background: rgba(3, 0, 20, 0.98);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
   z-index: 999;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `
 
-const mobileNavLink = css`
+const mobileNavLinksContainer = css`
   display: flex;
+  flex-direction: column;
   align-items: center;
-  padding: 18px 6%;
-  color: #9ca3af;
-  font-size: 1.05rem;
-  font-weight: 500;
+  gap: 32px;
+  width: 100%;
+`
+
+const mobileNavLinkStyle = (active) => css`
+  color: ${active ? '#ffffff' : '#9ca3af'};
+  font-size: 2rem;
+  font-weight: 700;
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  border-bottom: 1px solid rgba(100, 100, 200, 0.08);
-  min-height: 56px;
+  transition: all 0.3s ease;
+  position: relative;
+
+  /* Touch target size */
+  padding: 10px 20px;
 
   &:hover {
     color: #ffffff;
-    background: rgba(124, 58, 237, 0.1);
-    padding-left: 8%;
+    transform: scale(1.05);
   }
 
-  &:active {
-    background: rgba(124, 58, 237, 0.18);
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: ${active ? '40px' : '0'};
+    height: 4px;
+    background: #7c3aed;
+    border-radius: 2px;
+    transition: width 0.3s ease;
   }
 `
+
+// Framer Motion Variants
+const overlayVariants = {
+  hidden: { opacity: 0 },
+  visible: { 
+    opacity: 1, 
+    transition: { duration: 0.4, ease: [0.4, 0, 0.2, 1] } 
+  },
+  exit: { 
+    opacity: 0, 
+    transition: { duration: 0.3, ease: 'easeOut', delay: 0.2 } 
+  }
+}
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.2 }
+  }
+}
+
+const staggerItem = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 0.5, ease: [0.4, 0, 0.2, 1] } 
+  }
+}
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -209,6 +258,7 @@ export default function Navbar() {
   const { language, toggleLanguage } = useLanguage()
   const t = translations[language]
 
+  // Handle scroll detection and active section mapping
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50)
@@ -230,6 +280,18 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // Prevent background scrolling when mobile menu is open
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'auto'
+    }
+    return () => {
+      document.body.style.overflow = 'auto'
+    }
+  }, [mobileOpen])
+
   const scrollTo = (id) => {
     setMobileOpen(false)
     if (location.pathname !== '/') {
@@ -246,59 +308,72 @@ export default function Navbar() {
   return (
     <>
       <motion.nav
-        css={navStyle(scrolled)}
+        css={navStyle(scrolled || mobileOpen)} // Ensure navbar is visible/styled when menu opens
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
       >
-        <div css={css`display: flex; align-items: center;`}>
+        <div css={css`display: flex; align-items: center; z-index: 1001;`}>
           <div css={logoStyle} onClick={() => scrollTo('home')}>
             Abdullah Mirsab
           </div>
           <span css={badgeStyle}>✨ Ready to Innovate</span>
         </div>
 
-        <ul css={navLinksStyle}>
-          {navLinkIds.map((id) => (
-            <li key={id}>
-              <a
-                css={navLinkStyle(activeSection === id)}
-                onClick={() => scrollTo(id)}
-              >
-                {t.nav[id]}
-              </a>
-            </li>
-          ))}
-        </ul>
+        {/* Right side container groups everything together */}
+        <div css={rightContainer}>
+          <ul css={navLinksStyle}>
+            {navLinkIds.map((id) => (
+              <li key={id}>
+                <a
+                  css={navLinkStyle(activeSection === id)}
+                  onClick={() => scrollTo(id)}
+                >
+                  {t.nav[id]}
+                </a>
+              </li>
+            ))}
+          </ul>
 
-        <button css={langToggleBtn} onClick={toggleLanguage}>
-          <Globe size={16} />
-          {language.toUpperCase()}
-        </button>
+          <button css={langToggleBtn} onClick={toggleLanguage} style={{ zIndex: 1001 }}>
+            <FiGlobe size={18} />
+            {language.toUpperCase()}
+          </button>
 
-        <button css={mobileMenuBtn} onClick={() => setMobileOpen(!mobileOpen)}>
-          {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+          <button css={mobileMenuBtn} onClick={() => setMobileOpen(!mobileOpen)}>
+            <motion.div
+              initial={false}
+              animate={{ rotate: mobileOpen ? 90 : 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              {mobileOpen ? <FiX size={26} /> : <FiMenu size={26} />}
+            </motion.div>
+          </button>
+        </div>
       </motion.nav>
 
+      {/* Full-Screen Mobile Menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            css={mobileMenuStyle}
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            css={mobileMenuOverlay}
+            variants={overlayVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
           >
-            {navLinkIds.map((id) => (
-              <a
-                key={id}
-                css={mobileNavLink}
-                onClick={() => scrollTo(id)}
-              >
-                {t.nav[id]}
-              </a>
-            ))}
+            <motion.div css={mobileNavLinksContainer} variants={staggerContainer} initial="hidden" animate="visible">
+              {navLinkIds.map((id) => (
+                <motion.div key={id} variants={staggerItem}>
+                  <a
+                    css={mobileNavLinkStyle(activeSection === id)}
+                    onClick={() => scrollTo(id)}
+                  >
+                    {t.nav[id]}
+                  </a>
+                </motion.div>
+              ))}
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
