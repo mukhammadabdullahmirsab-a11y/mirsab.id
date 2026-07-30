@@ -6,11 +6,13 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import { ExternalLink, ArrowRight, Award, X, ZoomIn, Calendar, Building2 } from 'lucide-react'
-import { projects } from '../data/projects'
+import { projects as staticProjects } from '../data/projects'
 import { certificates } from '../data/certificates'
 import { techStack } from '../data/techStack'
 import { useLanguage } from '../context/LanguageContext'
 import { translations } from '../data/translations'
+import { db } from '../config/firebase'
+import { collection, getDocs } from 'firebase/firestore'
 
 const portfolioSection = css`
   position: relative;
@@ -429,9 +431,26 @@ const cardVariants = {
 export default function Portfolio() {
   const [tab, setTab] = useState(0)
   const [lightbox, setLightbox] = useState(null)
+  const [projects, setProjects] = useState(staticProjects) // Default to static
   const navigate = useNavigate()
   const { language } = useLanguage()
   const t = translations[language].portfolio
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      if (!db) return
+      try {
+        const querySnapshot = await getDocs(collection(db, 'projects'))
+        if (!querySnapshot.empty) {
+          const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+          setProjects(data)
+        }
+      } catch (error) {
+        console.error("Error fetching projects from Firebase, falling back to static:", error)
+      }
+    }
+    fetchProjects()
+  }, [])
 
   const openLightbox = useCallback((cert) => {
     if (cert.image) setLightbox(cert)

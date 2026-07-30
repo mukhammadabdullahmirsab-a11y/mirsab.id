@@ -11,6 +11,9 @@ import LibraryDemo from './pages/demos/LibraryDemo'
 import EcommerceDemo from './pages/demos/EcommerceDemo'
 import TaskManagerDemo from './pages/demos/TaskManagerDemo'
 import BlogDemo from './pages/demos/BlogDemo'
+import AdminLogin from './pages/AdminLogin'
+import AdminDashboard from './pages/AdminDashboard'
+import PrivateRoute from './components/PrivateRoute'
 
 const appStyle = css`
   position: relative;
@@ -39,6 +42,17 @@ export default function App() {
         <Route path="/demo/ecommerce" element={<EcommerceDemo />} />
         <Route path="/demo/taskmanager" element={<TaskManagerDemo />} />
         <Route path="/demo/blog" element={<BlogDemo />} />
+        
+        {/* Admin Routes */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route 
+          path="/admin" 
+          element={
+            <PrivateRoute>
+              <AdminDashboard />
+            </PrivateRoute>
+          } 
+        />
       </Routes>
     </div>
   )
