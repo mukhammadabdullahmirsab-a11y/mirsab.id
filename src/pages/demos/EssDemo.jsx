@@ -53,12 +53,43 @@ export default function EssDemo() {
   const [checkedOut, setCheckedOut] = useState(false)
   const [checkInTime, setCheckInTime] = useState('')
   const [checkOutTime, setCheckOutTime] = useState('')
-  const [locStatus, setLocStatus] = useState('Mendeteksi lokasi...')
+  const [locStatus, setLocStatus] = useState('Mendeteksi lokasi (mohon izinkan akses GPS)...')
+  const [coords, setCoords] = useState(null)
 
   useEffect(() => {
     const timer = setInterval(() => setNow(new Date()), 1000)
-    const geoTimer = setTimeout(() => setLocStatus('📍 Kantor Pusat — Jakarta Selatan (Terverifikasi)'), 1500)
-    return () => { clearInterval(timer); clearTimeout(geoTimer) }
+    
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const { latitude, longitude } = position.coords;
+          setCoords({ lat: latitude, lng: longitude });
+          
+          try {
+            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+            const data = await res.json();
+            const address = data.address;
+            
+            // Format address (try to get the most relevant parts)
+            const city = address.city || address.town || address.village || address.county || address.state || '';
+            const road = address.road || address.suburb || '';
+            const locName = road ? `${road}, ${city}` : city;
+            
+            setLocStatus(`📍 ${locName || 'Lokasi Terverifikasi'}`);
+          } catch (error) {
+            setLocStatus(`📍 Lat: ${latitude.toFixed(4)}, Lon: ${longitude.toFixed(4)}`);
+          }
+        },
+        (error) => {
+          setLocStatus('⚠️ Akses GPS ditolak atau gagal mendeteksi');
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+      );
+    } else {
+      setLocStatus('⚠️ Browser tidak mendukung GPS');
+    }
+
+    return () => clearInterval(timer)
   }, [])
 
   const pad = n => String(n).padStart(2, '0')
@@ -124,10 +155,15 @@ export default function EssDemo() {
           </div>
 
           <div css={locCard}>
-            <div css={css`display:flex;align-items:center;gap:8px;color:${accentLight};font-weight:600;margin-bottom:14px;`}><MapPin size={16}/> Status Lokasi</div>
+            <div css={css`display:flex;align-items:center;gap:8px;color:${accentLight};font-weight:600;margin-bottom:14px;`}><MapPin size={16}/> Status Lokasi Saat Ini</div>
             <div css={mapPlaceholder}>
               <MapPin size={28} />
-              <span css={css`font-size:0.85rem;text-align:center;`}>{locStatus}</span>
+              <span css={css`font-size:0.85rem;text-align:center;max-width:80%;`}>{locStatus}</span>
+              {coords && (
+                <span css={css`font-size:0.7rem;color:#64748b;margin-top:4px;`}>
+                  {coords.lat.toFixed(5)}, {coords.lng.toFixed(5)}
+                </span>
+              )}
             </div>
           </div>
 
