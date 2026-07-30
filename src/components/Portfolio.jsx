@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { css } from '@emotion/react'
 import { motion, AnimatePresence } from 'framer-motion'
