@@ -8,15 +8,15 @@ export const translations = {
     },
     hero: {
       greeting: "Hi, I'm",
-      roles: ['IT Support', 'Web Developer', 'Fresh Graduate', 'Problem Solver'],
+      roles: ['IT Support', 'Web Developer', 'IT Programmer', 'Problem Solver'],
       description: "Building User-Friendly Websites & Delivering Reliable IT Support — Bridging Development and Technical Solutions.",
       downloadCv: 'Download CV',
       contactMe: 'Contact Me',
       stats: {
         projects: 'Projects',
         certificates: 'Certificates',
-        fresh: 'Fresh',
-        graduate: 'Graduate'
+        fresh: 'Lulusan',
+        graduate: 'Programmer'
       }
     },
     about: {
@@ -78,7 +78,7 @@ export const translations = {
     },
     hero: {
       greeting: "Halo, Saya",
-      roles: ['IT Support', 'Web Developer', 'Fresh Graduate', 'Problem Solver'],
+      roles: ['IT Support', 'Web Developer', 'IT Programmer', 'Problem Solver'],
       description: "Membangun Website yang Ramah Pengguna & Memberikan Dukungan IT yang Andal — Menjembatani Pengembangan dan Solusi Teknis.",
       downloadCv: 'Unduh CV',
       contactMe: 'Hubungi Saya',
@@ -86,7 +86,7 @@ export const translations = {
         projects: 'Proyek',
         certificates: 'Sertifikat',
         fresh: 'Lulusan',
-        graduate: 'Baru'
+        graduate: 'Programmer'
       }
     },
     about: {

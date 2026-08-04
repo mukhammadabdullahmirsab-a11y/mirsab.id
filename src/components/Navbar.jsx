@@ -184,38 +184,45 @@ const mobileNavLinksContainer = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 32px;
+  gap: 24px;
   width: 100%;
+  padding: 0 20px;
 `
 
 const mobileNavLinkStyle = (active) => css`
-  color: ${active ? '#ffffff' : '#9ca3af'};
+  color: ${active ? '#c084fc' : '#9ca3af'};
   font-size: 2rem;
-  font-weight: 700;
+  font-weight: 600;
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-
-  /* Touch target size */
-  padding: 10px 20px;
+  padding: 12px 24px;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:hover {
-    color: #ffffff;
+    color: #c084fc;
     transform: scale(1.05);
   }
 
   &::after {
     content: '';
     position: absolute;
-    bottom: -4px;
+    bottom: 0;
     left: 50%;
-    transform: translateX(-50%);
-    width: ${active ? '40px' : '0'};
-    height: 4px;
-    background: #7c3aed;
+    transform: translateX(-50%) scaleX(${active ? 1 : 0});
+    width: 40px;
+    height: 3px;
+    background: linear-gradient(90deg, #7c3aed, #c084fc);
     border-radius: 2px;
-    transition: width 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  &.active-link::after {
+    transform: translateX(-50%) scaleX(1);
   }
 `
 
