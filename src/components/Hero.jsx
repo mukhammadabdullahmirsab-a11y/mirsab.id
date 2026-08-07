@@ -344,7 +344,7 @@ export default function Hero() {
             animate="visible"
           >
             <motion.h1 css={heroTitle} variants={itemVariants}>
-              <span css={gradientText}>{t.greeting}</span>
+              <span css={gradientText}>Mukhammad Abdullah Mirsab</span>
               <br />
               Web Developer & IT Support
             </motion.h1>
