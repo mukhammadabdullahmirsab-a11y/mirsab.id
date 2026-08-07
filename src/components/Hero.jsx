@@ -346,7 +346,7 @@ export default function Hero() {
             <motion.h1 css={heroTitle} variants={itemVariants}>
               <span css={gradientText}>{t.greeting}</span>
               <br />
-              Web Developer
+              Web Developer & IT Support
             </motion.h1>
 
             <motion.div css={typewriterStyle} variants={itemVariants}>
