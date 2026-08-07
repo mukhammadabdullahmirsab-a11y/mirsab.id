@@ -63,6 +63,19 @@ const gradientText = css`
   background-clip: text;
 `
 
+const whiteGlow = css`
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3);
+`
+
+const purpleGlow = css`
+  background: linear-gradient(135deg, #7c3aed, #a855f7, #c084fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 8px rgba(124, 58, 237, 0.6)) drop-shadow(0 0 20px rgba(168, 85, 247, 0.4));
+`
+
 const typewriterStyle = css`
   font-size: 1.3rem;
   color: #9ca3af;
@@ -344,7 +357,9 @@ export default function Hero() {
             animate="visible"
           >
             <motion.h1 css={heroTitle} variants={itemVariants}>
-              <span css={gradientText}>Web Developer & IT Support</span>
+              <span css={whiteGlow}>Web Developer</span>
+              <br />
+              <span css={purpleGlow}>& IT Support</span>
             </motion.h1>
 
             <motion.div css={typewriterStyle} variants={itemVariants}>
